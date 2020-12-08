@@ -144,17 +144,17 @@
 			};
 
 			function lookupStats() {
-				var year_index = parseInt(document.getElementById("year").value);
-				var first_name_index = parseInt(document.getElementById("first-name").value);
-				var last_name_index = parseInt(document.getElementById("last-name").value);
+				var year_id = parseInt(document.getElementById("year").value);
+				var first_name_id = parseInt(document.getElementById("first-name").value);
+				var last_name_id = parseInt(document.getElementById("last-name").value);
 
 				var stats_element = document.getElementById("stats");
 				stats_element.innerHTML = "";
 
-				if (isNaN(year_index) || isNaN(first_name_id) || isNaN(last_name_id))
+				if (isNaN(year_id) || isNaN(first_name_id) || isNaN(last_name_id))
 					return;
 
-				var year_offset = 12 - year_index;
+				var year_offset = 12 - year_id;
 				
 
 				var stats = Object.entries(STAT_CLOCKWISE_OFFSET_FROM_1963)
