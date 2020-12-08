@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+		<h1>HardBall II Code Wheel</h1>
+		<div>
+			<label for="first-name">First Name:</label>
+
+			<select name="first-name" id="first-name">
+				<option disabled selected value> -- select an option -- </option>
+			</select>
+		</div>
+		<br>
+		<div>
+			<label for="last-name">Last Name:</label>
+
+			<select name="last-name" id="last-name">
+				<option disabled selected value> -- select an option -- </option>
+			</select>
+		</div>
+	
+		<br>
+		<div>
+			<label for="year">Year:</label>
+
+			<select name="year" id="year">
+				<option disabled selected value> -- select an option -- </option>
+			</select>
+		</div>
+		<br>		
+		<div id="stats"></div>
+	
+		<script>
+			HOLE = -1;
+
+			LAST_NAMES = [
+				"Bauer",
+				"Caliente",
+				"Doctorow",
+				"Clark",
+				"Friesen",
+				"Howell",
+				"Jackson",
+				"Kulziniski",
+				"Mattrick",
+				"Pickell",
+				"Taylor",
+				"Wong",
+							
+			];
+
+
+			FIRST_NAMES = [
+				"Armory",
+				"Bobby",
+				"Chris",
+				"Don",
+				"Jim",
+				"Kevin",
+				"Mike",
+				"Pete",
+				"Rick",
+				"Steve",
+				"David",
+				"Willie"
+			];
+			
+			YEARS = [
+				"1963",
+				"1964",
+				"1965",
+				"1966",
+				"1967",
+				"1968",
+				"1969",
+				"1970",
+				"1971",
+				"1972",
+				"1973",
+				"1974",
+			];
+			
+			class StatsColumn {
+				constructor(ba, g_bb, double_tripple, ab, so_hits, sb_cs, rbi, hr) {
+					this.BA = ba;
+					this.G = g_bb;
+					this.BB = g_bb;
+					this.DOUBLES = double_tripple;
+					this.TRIPLES = double_tripple
+					this.AB = ab;
+					this.SO = so_hits;
+					this.HITS = so_hits;
+					this.SB = sb_cs;
+					this.CS = sb_cs;
+					this.RBI = rbi;
+					this.HR = hr;
+				}
+			}
+
+			LAST_NAME_WHEEL = [
+				new StatsColumn(224, 132, 21, 502, 82, 30, 69, 14),
+				new StatsColumn(266, 159, 20, 555, 46, 28, 68, 25),
+				new StatsColumn(320, 78, 15, 523, 77, 5, 89, 13),
+				new StatsColumn(345, 155, 17, 150, 93, 31, 76, 27),
+				new StatsColumn(350, 74, 28, 559, 100, 68, 24, 45),
+				new StatsColumn(321, 143, 35, 256, 49, 14, 117, 11),
+				new StatsColumn(178, 148, 13, 462, 120, 16, 38, 2),
+				new StatsColumn(282, 136, 18, 465, 45, 19, 109, 28),
+				new StatsColumn(388, 153, 8, 510, 60, 2, 21, 36),
+				new StatsColumn(237, 122, 16, 477, 65, 1, 25, 31),
+				new StatsColumn(278, 121, 27, 396, 86, 7, 108, 21),
+				new StatsColumn(245, 142, 34, 412, 101, 13, 67, 36),
+			];
+
+			FIRST_NAME_WHEEL = [
+				new StatsColumn(247, 152, 3, 150, HOLE, 10, 72, 5),
+				new StatsColumn(210, HOLE, 7, 512, 55, 17, HOLE, 3),
+				new StatsColumn(289, 152, 15, HOLE, 75, 11, 32, 22),
+				new StatsColumn(HOLE, 137, 40, 490, 79, 7, 30, HOLE),
+				new StatsColumn(296, 159, 26, 521, 69, HOLE, 78, 19),
+				new StatsColumn(275, 66, HOLE, 478, 64, 49, 73, 17),
+				new StatsColumn(347, 139, 38, 524, 48, 0, HOLE, 6),
+				new StatsColumn(317, HOLE, 29, 539, 25, 3, 59, 44),
+				new StatsColumn(271, 51, 30, 240, HOLE, 3, 44, 19),
+				new StatsColumn(276, 95, HOLE, 510, 49, 1, 121, 16),
+				new StatsColumn(237, 102, 6, 270, HOLE, 9, 74, HOLE),
+				new StatsColumn(HOLE, 50, 26, 210, 76, 15, 40, 2),
+			];
+
+			STAT_CLOCKWISE_OFFSET_FROM_1963 = {
+				BA: 0,
+				HR: 0,
+				DOUBLES: 1,
+				SO: 1,
+				RBI: 2,
+				BB: 3,
+				HITS: 3,
+				TRIPLES: 8,
+				CS: 9,
+				G: 10,
+				AB: 11,
+				SB: 11
+			};
+
+			function lookupStats() {
+				var year_index = parseInt(document.getElementById("year").value);
+				var first_name_index = parseInt(document.getElementById("first-name").value);
+				var last_name_index = parseInt(document.getElementById("last-name").value);
+
+				var stats_element = document.getElementById("stats");
+				stats_element.innerHTML = "";
+
+				if (isNaN(year_index) || isNaN(first_name_id) || isNaN(last_name_id))
+					return;
+
+				var year_offset = 12 - year_index;
+				
+
+				var stats = Object.entries(STAT_CLOCKWISE_OFFSET_FROM_1963)
+					.map(([statName, offset], index) => {
+						var stat_offset = (year_offset + offset) % 12;
+
+						var first_name_offset = (first_name_id + stat_offset) % 12;
+						var first_name_stats = FIRST_NAME_WHEEL[first_name_offset];
+						var stat = first_name_stats[statName];
+
+						if (stat === HOLE) {
+							var last_name_offset = (last_name_id + stat_offset) % 12;
+							var last_name_stats = LAST_NAME_WHEEL[last_name_offset];
+							stat = last_name_stats[statName];
+						}
+
+						stats_element.innerHTML += `${statName}: ${stat}<br>`;
+						return {
+							name: statName,
+							value: stat
+						};
+				});
+
+				console.log(stats);
+			}
+			
+			function initializeDropdownValues(selector_id, options) {
+				var selector = document.getElementById(selector_id);
+				
+				options.forEach((element, id) => {
+					selector.add(new Option(element, id));
+				});
+				selector.selectedIndex = null;
+				selector.onchange = lookupStats
+
+				console.log("done option setup: " + selector_id);
+			}
+
+			initializeDropdownValues("first-name", FIRST_NAMES);
+			initializeDropdownValues("last-name", LAST_NAMES);
+			initializeDropdownValues("year", YEARS);
+		</script>
+	</body>
+</html
